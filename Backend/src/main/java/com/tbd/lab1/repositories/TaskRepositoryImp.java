@@ -15,8 +15,8 @@ import java.util.List;
 public class TaskRepositoryImp implements TaskRepository{
     @Autowired
     private Sql2o sql2o;
-    
-    /** 
+
+    /**
      * Método que cuenta la cantidad de tareas en la base de datos
      * @return int
      */
@@ -28,8 +28,8 @@ public class TaskRepositoryImp implements TaskRepository{
         }
         return total;
     }
-    
-    /** 
+
+    /**
      * Método que retorna una lista con todas las tareas en la base de datos
      * @return List<Task>
      */
@@ -43,8 +43,8 @@ public class TaskRepositoryImp implements TaskRepository{
             return null;
         }
     }
-    
-    /** 
+
+    /**
      * Método que obtiene una tarea por su id
      * @param id
      * @return List<Task>
@@ -60,8 +60,8 @@ public class TaskRepositoryImp implements TaskRepository{
             return null;
         }
     }
-    
-    /** 
+
+    /**
      * Método que crea una tarea en la base de datos
      * @param task
      * @return Task
@@ -69,8 +69,9 @@ public class TaskRepositoryImp implements TaskRepository{
     @Override
     public Task createTask(Task task){
         try(Connection conn = sql2o.open()){
-            conn.createQuery("INSERT INTO \"Task\" (description,fk_emergency,fk_state_task)"+
-                            "values (:taskDescription,:taskFkEmergency,:taskFkState)")
+            String coordenadas = task.getLongitud().toString() + " " + task.getLatitud().toString();
+            conn.createQuery("INSERT INTO \"Task\" (description,fk_emergency,fk_state_task, ubication_task)"+
+                            "values (:taskDescription,:taskFkEmergency,:taskFkState, ST_GeomFromText('POINT(" + coordenadas + ")' , 4326 ))")
                     .addParameter("taskDescription", task.getDescription())
                     .addParameter("taskFkEmergency", task.getFk_emergency())
                     .addParameter("taskFkState", task.getFk_state_task())
@@ -81,16 +82,18 @@ public class TaskRepositoryImp implements TaskRepository{
             return null;
         }
     }
-    
-    /** 
-     * Método que edita una tarea en la base de datos	
+
+    /**
+     * Método que edita una tarea en la base de datos
      * @param task
      * @return boolean
      */
     @Override
     public boolean editTask(Task task) {
         try(Connection conn = sql2o.open()){
-            conn.createQuery("UPDATE \"Task\" SET description = :taskDescription, fk_emergency = :taskFkEmergency, fk_state_task = :taskFkState WHERE id_task = :taskId")
+            String coordenadas = task.getLongitud().toString() + " " + task.getLatitud().toString();
+            conn.createQuery("UPDATE \"Task\" SET description = :taskDescription, fk_emergency = :taskFkEmergency," +
+                            " fk_state_task = :taskFkState, ubication_task = ST_GeomFromText('POINT(" + coordenadas + ")' , 4326 ) WHERE id_task = :taskId")
                     .addParameter("taskDescription", task.getDescription())
                     .addParameter("taskFkEmergency", task.getFk_emergency())
                     .addParameter("taskFkState", task.getFk_state_task())
@@ -102,8 +105,8 @@ public class TaskRepositoryImp implements TaskRepository{
             return false;
         }
     }
-    
-    /** 
+
+    /**
      * Método que elimina una tarea en la base de datos
      * @param id
      * @return boolean

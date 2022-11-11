@@ -3,6 +3,7 @@
 -- Database: VoluntariadoDB
 -------------------------------------------------------
 DROP DATABASE IF EXISTS "VoluntariadoDB";
+CREATE EXTENSION postgis;
 
 CREATE DATABASE "VoluntariadoDB"
     WITH
@@ -68,6 +69,7 @@ CREATE TABLE IF NOT EXISTS "Emergency" (
     "id_emergency" SERIAL NOT NULL,
     "emergency_details" VARCHAR(500) NOT NULL,
 	"id_institution" int,
+	"ubication_emergency" GEOMETRY (point),
     "status" VARCHAR(20) NOT NULL,
     PRIMARY KEY ("id_emergency"),
     CONSTRAINT "fk_institution"
@@ -110,6 +112,7 @@ CREATE TABLE IF NOT EXISTS "Task"(
     "id_task" SERIAL NOT NULL,
     "description" VARCHAR(300),
 	"id_emergency" int,
+	"ubication_task" GEOMETRY(point),
 	"id_state_task" int,
     PRIMARY KEY ("id_task"),
     CONSTRAINT "fk_emergency"

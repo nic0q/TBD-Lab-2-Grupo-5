@@ -9,8 +9,12 @@ public class Emergency{
     private String status;
     private Integer id_institution;
 
-    
-    /** 
+    private Double latitud;
+
+    private Double longitud;
+
+
+    /**
      * Obtiene el id (integer) de una Emergencia
      * @return Integer
      */
@@ -18,8 +22,8 @@ public class Emergency{
         return id_emergency;
     }
 
-    
-    /** 
+
+    /**
      * Modifica un id (integer) a una Emergencia
      * @param id_emergency
      */
@@ -27,8 +31,8 @@ public class Emergency{
         this.id_emergency = id_emergency;
     }
 
-    
-    /** 
+
+    /**
      * Obtiene los detalles (string) de una Emergencia
      * @return String
      */
@@ -36,8 +40,8 @@ public class Emergency{
         return emergency_details;
     }
 
-    
-    /** 
+
+    /**
      * Modifica los detalles (string) de una Emergencia
      * @param emergency_details
      */
@@ -45,8 +49,8 @@ public class Emergency{
         this.emergency_details = emergency_details;
     }
 
-    
-    /** 
+
+    /**
      * Obtiene el estado (string) de una Emergencia
      * @return String
      */
@@ -54,8 +58,8 @@ public class Emergency{
         return status;
     }
 
-    
-    /** 
+
+    /**
      * Modifica el estado (string) de una Emergencia
      * @param status
      */
@@ -63,8 +67,8 @@ public class Emergency{
         this.status = status;
     }
 
-    
-    /** 
+
+    /**
      * Obtiene el id de la institución (integer) de una Emergencia
      * @return Integer
      */
@@ -72,8 +76,8 @@ public class Emergency{
         return id_institution;
     }
 
-    
-    /** 
+
+    /**
      * Modifica el id de la institución (integer) de una Emergencia
      * @param id_institution
      */
@@ -81,8 +85,8 @@ public class Emergency{
         this.id_institution = id_institution;
     }
 
-    
-    /** 
+
+    /**
      * Método que retorna un string con los atributos de la clase Emergency
      * @return String
      */
@@ -93,6 +97,26 @@ public class Emergency{
                 ", emergency_details='" + emergency_details + '\'' +
                 ", status='" + status + '\'' +
                 ", id_institution=" + id_institution +
+                ", latitud=" + latitud +
+                ", longitud=" + longitud +
                 '}';
+    }
+
+
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
     }
 }

@@ -17,8 +17,8 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     @Autowired
     private Sql2o sql2o;
 
-    
-    /** 
+
+    /**
      * Método que retorna una lista de todas las emergencias
      * @return List<Emergency>
      */
@@ -33,8 +33,8 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
         }
     }
 
-    
-    /** 
+
+    /**
      * Método que recibe un id y busca una emergencia especifica. Si la emergencia
      * existe entonces la retorna, de lo contrario retorna null.
      * @param id
@@ -52,9 +52,9 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
         }
     }
 
-    
-    
-    /** 
+
+
+    /**
      * Método que recibe un objeto de tipo Emergency y lo inserta en la base de datos.
      * Luego agrega los atributos especificados en la tabla de la base de datos. Retorna
      * el objeto de tipo Emergency que se insertó. Si no se pudo insertar retorna null.
@@ -62,11 +62,12 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
      * @return Emergency
      */
     @Override
-    
+
     public Emergency createEmergency(Emergency emergency){
+        String coordenadas = emergency.getLongitud().toString() + " " + emergency.getLatitud().toString();
         try(Connection conn = sql2o.open()){
-            conn.createQuery("INSERT INTO \"Emergency\" (id_emergency, emergency_details, id_institution, status)" +
-                            "values (:id_emergency, :emergencyDetails, :emergencyInstitution, :emergencyStatus)")
+            conn.createQuery("INSERT INTO \"Emergency\" (id_emergency, emergency_details, id_institution, status, ubication_emergency)" +
+                            "values (:id_emergency, :emergencyDetails, :emergencyInstitution, :emergencyStatus,  ST_GeomFromText(POINT(" + coordenadas + ") , 4326 ))")
                     .addParameter("id_emergency", emergency.getId_emergency())
                     .addParameter("emergencyDetails", emergency.getEmergency_details())
                     .addParameter("emergencyInstitution", emergency.getId_institution())
@@ -79,8 +80,8 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
         }
     }
 
-    
-    /** 
+
+    /**
      * Método que recibe un objeto de tipo Emergency y lo actualiza en la base de datos.
      * Modifica los atributos especificados en la tabla de la base de datos. Retorna
      * true si se pudo actualizar, de lo contrario retorna false.
@@ -90,7 +91,9 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     @Override
     public boolean editEmergency(Emergency emergency){
         try(Connection conn = sql2o.open()){
-            conn.createQuery("UPDATE \"Emergency\" SET emergency_details = :emergencyDetails, id_institution = :emergencyInstitution, status = :emergencyStatus WHERE id_emergency = :emergencyId")
+            String coordenadas = emergency.getLongitud().toString() + " " + emergency.getLatitud().toString();
+            conn.createQuery("UPDATE \"Emergency\" SET emergency_details = :emergencyDetails, id_institution = :emergencyInstitution, status = :emergencyStatus," +
+                            "ubication_emergency = ST_GeomFromText(POINT(" + coordenadas + ") , 4326 ) WHERE id_emergency = :emergencyId")
                     .addParameter("emergencyDetails", emergency.getEmergency_details())
                     .addParameter("emergencyInstitution", emergency.getId_institution())
                     .addParameter("emergencyStatus", emergency.getStatus())
@@ -103,8 +106,8 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
         }
     }
 
-    
-    /** 
+
+    /**
      * Método que recibe un id y elimina una emergencia especifica. Si la emergencia
      * existe entonces la elimina, de lo contrario retorna false.
      * @param id
@@ -121,8 +124,8 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
         return deletedEmergency == 1;
     }
 
-    
-    /** 
+
+    /**
      * Método que elimina todas las emergencias de la base de datos.
      * Retorna 1 si se pudo eliminar, de lo contrario retorna 0.
      * @return int
