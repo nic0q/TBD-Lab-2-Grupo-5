@@ -1,4 +1,6 @@
 <template>
+  <div>
+  <Navbar></Navbar>
   <form method="post" class="formu">
     <div class="d-flex justify-content-center">
       <h1 style="color: white"> Ingresar una nueva emergencia</h1>
@@ -59,7 +61,7 @@
         Ingresar Emergencia
       </button>
     </div>
-  </form>
+  </form></div>
 </template>
 <style scoped>
   .formu{
@@ -101,7 +103,11 @@
   }
 </style>
 <script>
+import Navbar from "../components/Navbar.vue";
 export default {
+  components: {
+    Navbar,
+  },
   data() {
     return {
       formData: {
