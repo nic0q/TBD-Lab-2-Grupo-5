@@ -7,24 +7,60 @@
   <div>
     <Navbar></Navbar>
     <div class="home">
-    <h1>Emergencias por región</h1>
-    <span>Selecciona la región para buscar emergencias</span>
-    <form>
-      <select class="form-select mb-3" aria-label="Default select example" v-model="id_region">
-        <option selected>Seleccione la región</option>
-        <option v-for="(region, index) in regiones" :value="region.id_region" :key="index">
-          {{region.nombre}}
-        </option>
-      </select>
-      <p>
-        <button class = "btn btn-success centrado" type = 'submit'>Buscar</button>
-      </p>
-    </form>
-    <div>{{point}} </div>
-    <div>{{titulo}}</div>
-    <div id="mapid"></div>
+      <h1>Emergencias por región</h1>
+      <span>Selecciona la región para buscar emergencias</span>
+      <form>
+        <select class="form-select mb-3" aria-label="Default select example" v-model="id_region">
+          <option selected>Seleccione la región</option>
+          <option v-for="(region, index) in regiones" :value="region.id_region" :key="index">
+            {{ region.nombre }}
+          </option>
+        </select>
+        <p>
+          <button class="btn btn-success centrado" type='submit'>Buscar</button>
+        </p>
+      </form>
+      <div class="row">
+        <div class="col-md-6">
+          <div>{{ point }} </div>
+          <div>{{ titulo }}</div>
+          <div id="mapid"></div>
+        </div>
+        <div class="col-md-6">
+          <table class="table table-dark" style="width: 1000px">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 </template>
 <script>
 //Importaciones
@@ -33,9 +69,9 @@ import 'leaflet/dist/leaflet.css'; //css leaflet
 var icon = require('leaflet/dist/images/marker-icon-2x.png'); //ícono de marcadores
 //Se crea objeto ícono con el marcador
 var LeafIcon = L.Icon.extend({
-          options: {iconSize:[25, 25], iconAnchor:[25, 25], popupAnchor: [1, -34],}
-      });
-var myIcon = new LeafIcon({iconUrl: icon});
+  options: { iconSize: [25, 25], iconAnchor: [25, 25], popupAnchor: [1, -34], }
+});
+var myIcon = new LeafIcon({ iconUrl: icon });
 //librería axios
 
 import axios from 'axios';
@@ -45,30 +81,30 @@ export default {
     Navbar,
   },
   name: 'Home',
-  data(){
-    return{
-      latitud:null, //Datos de nuevo punto
-      longitud:null,
+  data() {
+    return {
+      latitud: null, //Datos de nuevo punto
+      longitud: null,
       regiones: [], //Datos de regiones
-      name:'',
-      points:[], //colección de puntos cargados de la BD
-      message:'',
-      mymap:null, //objeto de mapa(DIV)
+      name: '',
+      points: [], //colección de puntos cargados de la BD
+      message: '',
+      mymap: null, //objeto de mapa(DIV)
       id_region: 0
     }
   },
-  computed:{
-    point(){ // función computada para representar el punto seleccionado
-      if(this.latitud && this.longitud){
+  computed: {
+    point() { // función computada para representar el punto seleccionado
+      if (this.latitud && this.longitud) {
         let lat = this.latitud.toFixed(5);
         let lon = this.longitud.toFixed(5);
         return `(${lat}, ${lon})`;
-      }else{
+      } else {
         return '';
       }
     }
   },
-  methods:{
+  methods: {
     async get_regiones() {
       try {
         let response = await this.$axios.get("/regiones");
@@ -77,19 +113,18 @@ export default {
         console.log("error", error);
       }
     },
-    clearMarkers(){ //eliminar marcadores
-      this.points.forEach(p=>{
+    clearMarkers() { //eliminar marcadores
+      this.points.forEach(p => {
         this.mymap.removeLayer(p);
       })
       this.points = [];
     },
-    obtenerID()
-    {
+    obtenerID() {
       this.clearMarkers();  // limpiamos los marcadores
       this.get_point(this.mymap, this.id_region);  //Se agregan los puntos mediante llamada al servicio
       this.id_region = 0; //seteamos el id que aparece en la casilla
     },
-    async get_points(map, id_region){ //función para obtener los puntos de la BD
+    async get_points(map, id_region) { //función para obtener los puntos de la BD
       try {
         //se llama el servicio
         let response = await axios.get('http://localhost:8080/tareas/' + id_region);
@@ -99,9 +134,9 @@ export default {
         //Se itera por los puntos
         dataPoints.forEach(point => {
           //Se crea un marcador por cada punto
-          let p =[point.latitud,point.longitud]
-          let marker = L.marker(p, {icon:myIcon}) //se define el ícono del marcador
-          .bindPopup(point.titulo); //Se agrega un popup con el nombre
+          let p = [point.latitud, point.longitud]
+          let marker = L.marker(p, { icon: myIcon }) //se define el ícono del marcador
+            .bindPopup(point.titulo); //Se agrega un popup con el nombre
           //Se agrega a la lista
           this.points.push(marker);
         });
@@ -110,24 +145,24 @@ export default {
           p.addTo(map)
         })
       } catch (error) {
-       console.log('error', error);
+        console.log('error', error);
       }
     },
   },
-  mounted:function(){
+  mounted: function () {
     this.get_regiones();
     let _this = this;
     //Se asigna el mapa al elemento con id="mapid"
-     this.mymap = L.map('mapid').setView([-33.456, -70.648], 7);
+    this.mymap = L.map('mapid').setView([-33.456, -70.648], 7);
     //Se definen los mapas de bits de OSM
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 100
     }).addTo(this.mymap);
     //Evento click obtiene lat y long actual
-    this.mymap.on('click', function(e) {
+    this.mymap.on('click', function (e) {
       _this.latitude = e.latlng.lat;
-      _this.longitude =e.latlng.lng;
+      _this.longitude = e.latlng.lng;
     });
     //Se agregan los puntos mediante llamada al servicio
     //this.getPoints(this.mymap, this.id_voluntario);
@@ -136,22 +171,25 @@ export default {
 </script>
 
 <style>
-.home{
-  display:flex;
+.home {
+  display: flex;
   flex-direction: column;
   align-items: center;
   background: #262626;
   color: white;
 }
+
 /* Estilos necesarios para definir el objeto de mapa */
 #mapid {
-  height: 500px;
-  width:1000px;
+  height: 685px;
+  width: 1000px;
 }
-.text_centrado{
+
+.text_centrado {
   text-align: center;
 }
-button.centrado{
+
+button.centrado {
   width: 110px;
   margin-left: 50%;
   transform: translateX(-50%);
