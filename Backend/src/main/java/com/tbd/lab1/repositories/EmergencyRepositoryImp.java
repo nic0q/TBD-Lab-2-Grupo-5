@@ -138,4 +138,18 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
             return 0;
         }
     }
+
+    /*
+    // id de parámetro es el de la tabla región para filtrar
+    @Override
+    public List<Emergency> obtieneEmergenciasPorRegion(Integer id){
+        try(Connection conn = sql2o.open()){
+            return conn.createQuery("SELECT * FROM 'Emergency' AS e INNER JOIN division_regional AS r ON ST_WITHIN(e.location, r.geom) WHERE r.cod_reg = :id")
+                    .addParameter("id",id)
+                    .executeAndFetch(Emergency.class);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }*/
 }

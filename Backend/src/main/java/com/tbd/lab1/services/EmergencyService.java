@@ -109,4 +109,10 @@ public class EmergencyService {
             return "Hubo un error eliminando emergencias";
         }
     }
+
+    /*
+    @GetMapping("/emergencies/region/{id}")
+    public List<Emergency> getEmergenciesByRegion(@PathVariable("id") Integer id){
+        return emergencyRepository.obtieneEmergenciasPorRegion(id);
+    }*/
 }

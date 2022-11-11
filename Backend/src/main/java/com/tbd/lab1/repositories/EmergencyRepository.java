@@ -20,4 +20,6 @@ public interface EmergencyRepository {
     public boolean deleteEmergency(int id);
 
     public int deleteAllEmergency();
+
+    // public List<Emergency> obtieneEmergenciasPorRegion(Integer id);
 }
