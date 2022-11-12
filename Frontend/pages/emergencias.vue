@@ -14,13 +14,14 @@
             <span>Selecciona la región para buscar emergencias</span>
             <div>
               <select class="form-select mb-3" aria-label="Default select example" v-model="id_region">
-                <option selected>Seleccione la región</option>
+                <option :value="-1" selected>Ver todas</option>
                 <option v-for="(region, index) in regiones" :value="region.gid" :key="index">
                   {{ region.nom_reg }}
                 </option>
               </select>
               <p>
                 <button class="btn btn-success" v-on:click="get_points()">Buscar</button>
+                <div v-if="this.no_emergencies" class="alert alert-info" role="alert">No hay emergencias para esta region</div>
               </p>
             </div>
             <table class="table" style="width: 800px">
@@ -45,7 +46,7 @@
           </div>
           <div class="col-md-6" style="margin-top: 50px">
             <div>
-              <h3 v-if="!this.region_name === ''">{{ this.region_name }}</h3>
+              <h3 v-if="!this.region_name == ''">{{ this.region_name }}</h3>
               <h3 v-else>Chile</h3>
               <div id="mapita"></div>
             </div>
@@ -80,9 +81,9 @@ export default {
       regiones: [], //Datos de regiones
       region_name: '',
       points: [], //colección de puntos cargados de la BD
-      message: '',
+      no_emergencies: false, //bandera para saber si hay emergencias
       mymap: null, //objeto de mapa(DIV)
-      id_region: 14,
+      id_region: -1,
       emergencies: []
     }
   },
@@ -112,21 +113,41 @@ export default {
       })
       this.points = [];
     },
+    async get_emergencies() {
+      try {
+        let response = await this.$axios.get("/emergencies");
+        this.emergencies = response.data;
+      } catch (error) {
+        console.log("error", error);
+      }
+    },
+    async get_emergencies_by_region(){
+      //se llama el servicio
+      let response = await this.$axios.get('/emergencies/regions/' + this.id_region);
+      this.emergencies = response.data;
+      this.emergencies.length === 0 ? this.no_emergencies = true : this.no_emergencies = false;
+    },
+    async get_region_name(){
+      let region = await this.$axios.get("/regions/" + this.id_region);
+      this.region_name = region.data[0].nom_reg;
+    },
     async get_points() { //función para obtener los puntos de la BD
       this.clearMarkers();
       try {
         // Se obtiene el nombre de la region
-        let region = await this.$axios.get("/regions/" + this.id_region);
-        this.region_name = region.data[0].nom_reg;
-        //se llama el servicio
-        let response = await this.$axios.get('/emergencies/regions/' + this.id_region);
-        this.emergencies = response.data;
+        if(this.id_region === -1){
+          await this.get_emergencies();
+        }
+        else{
+          await this.get_region_name();
+          await this.get_emergencies_by_region();
+        }
         //Se itera por los puntos
         this.emergencies.forEach(point => {
           //Se crea un marcador por cada punto
           let p = [point.latitud, point.longitud]
-          let marker = L.marker(p, { icon: myIcon }) //se define el ícono del marcador
-            .bindPopup(point.emergency_details, point.latitud); //Se agrega un popup con el nombre
+          const popup = point.emergency_details + " (" + point.latitud + "," + point.longitud + ")";
+          let marker = L.marker(p, { icon: myIcon }).bindPopup(popup); //Se agrega un popup con el nombre y se define el ícono del marcador
           //Se agrega a la lista
           this.points.push(marker);
         });
@@ -134,7 +155,7 @@ export default {
         this.points.forEach(p => {
           p.addTo(this.mymap)
         })
-        this.mymap.flyTo([this.emergencies[0].latitud, this.emergencies[0].longitud], 12);
+        this.id_region !== -1 ? this.mymap.flyTo([this.emergencies[0].latitud, this.emergencies[0].longitud], 12) : this.mymap.flyTo([-35.675147, -71.542969], 4.2);
       } catch (error) {
         console.log('error', error);
       }
@@ -146,6 +167,8 @@ export default {
 
   mounted: function () {
     this.get_regiones();
+    this.get_emergencies();
+    this.get_points();
     let _this = this;
     //Se asigna el mapa al elemento con id="mapita"
     this.mymap = L.map('mapita').setView([-33.456, -70.648], 7);
