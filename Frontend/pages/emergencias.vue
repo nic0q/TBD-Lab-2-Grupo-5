@@ -6,51 +6,51 @@
 <template>
   <div>
     <Navbar></Navbar>
-  <div class="home">
-    <div>
-      <h1>Emergencias por región</h1>
-      <span>Selecciona la región para buscar emergencias</span>
+    <div class="home">
       <div>
-        <select class="form-select mb-3" aria-label="Default select example" v-model="id_region">
-          <option selected>Seleccione la región</option>
-          <option v-for="(region, index) in regiones" :value="region.gid" :key="index">
-            {{ region.nom_reg }}
-          </option>
-        </select>
-        <p>
-          <button class="btn btn-success" v-on:click="get_points()">Buscar</button>
-        </p>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <table class="table" style="width: 1000px">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Detalles</th>
-                <th scope="col">Status</th>
-                <th scope="col">Longitud</th>
-                <th scope="col">Latitud</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(emergency, index) in this.emergencies" :value="emergency.id_emergency" :key="index">
-                <img  class="eye_button" v-on:click="goToPoint(emergency.latitud, emergency.longitud)" src = "../static/eye-solid.svg" alt="My Happy SVG"/>
-                <td>{{emergency.emergency_details}}</td>
-                <td>{{emergency.status}}</td>
-                <td>{{emergency.longitud}}</td>
-                <td>{{emergency.latitud}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-md-6">
-          <h3>{{this.region_name}}</h3>
-          <div id="mapita"></div>
+        <div class="row">
+          <div class="col-md-5" style="margin-top: 50px; margin-left: 20px;">
+            <h1>Emergencias por región</h1>
+            <span>Selecciona la región para buscar emergencias</span>
+            <div>
+              <select class="form-select mb-3" aria-label="Default select example" v-model="id_region">
+                <option selected>Seleccione la región</option>
+                <option v-for="(region, index) in regiones" :value="region.gid" :key="index">
+                  {{ region.nom_reg }}
+                </option>
+              </select>
+              <p>
+                <button class="btn btn-success" v-on:click="get_points()">Buscar</button>
+              </p>
+            </div>
+            <table class="table" style="width: 800px">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Detalles</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Latitud / Longitud</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(emergency, index) in this.emergencies" :value="emergency.id_emergency" :key="index">
+                  <img class="eye_button" v-on:click="goToPoint(emergency.latitud, emergency.longitud)" style="margin-left: 10px"
+                    src="../static/eye-solid.svg" alt="Eye" />
+                  <td>{{ emergency.emergency_details }}</td>
+                  <td>{{ emergency.status }}</td>
+                  <td>({{ emergency.latitud }}, {{ emergency.longitud }})</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-6" style="margin-top: 50px">
+            <h3>{{ this.region_name }}</h3>
+            <div id="mapita"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div></div>
+  </div>
 </template>
 <script>
 //Importaciones
@@ -59,7 +59,7 @@ import 'leaflet/dist/leaflet.css'; //css leaflet
 const icon = require('leaflet/dist/images/marker-icon-2x.png'); //ícono de marcadores
 //Se crea objeto ícono con el marcador
 const LeafIcon = L.Icon.extend({
-  options: { iconSize: [25, 35], popupAnchor: [1, -34],}
+  options: { iconSize: [25, 35], popupAnchor: [1, -34], }
 });
 const myIcon = new LeafIcon({ iconUrl: icon });
 //librería axios
@@ -80,7 +80,7 @@ export default {
       points: [], //colección de puntos cargados de la BD
       message: '',
       mymap: null, //objeto de mapa(DIV)
-      id_region: 14 ,
+      id_region: 14,
       emergencies: []
     }
   },
@@ -124,7 +124,7 @@ export default {
           //Se crea un marcador por cada punto
           let p = [point.latitud, point.longitud]
           let marker = L.marker(p, { icon: myIcon }) //se define el ícono del marcador
-          .bindPopup(point.emergency_details, point.latitud); //Se agrega un popup con el nombre
+            .bindPopup(point.emergency_details, point.latitud); //Se agrega un popup con el nombre
           //Se agrega a la lista
           this.points.push(marker);
         });
@@ -141,7 +141,7 @@ export default {
       this.mymap.flyTo([lat, long], 18);
     }
   },
-  
+
   mounted: function () {
     this.get_regiones();
     let _this = this;
@@ -171,24 +171,28 @@ export default {
   background: #262626;
   color: white;
 }
-.table{
+
+.table {
   background-color: white;
 }
+
 /* Estilos necesarios para definir el objeto de mapa */
 #mapita {
   height: 685px;
-  width: 1000px;
+  width: 1100px;
 }
 
 .text_centrado {
   text-align: center;
 }
-.eye_button{
+
+.eye_button {
   cursor: pointer;
-  color : "red";
+  color: "red";
   width: 30px;
   height: 50px;
 }
+
 button.centrado {
   width: 110px;
   margin-left: 50%;
