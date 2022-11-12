@@ -9,7 +9,7 @@
     <div class="home">
       <h1>Emergencias por región</h1>
       <span>Selecciona la región para buscar emergencias</span>
-      <form>
+      <div>
         <select class="form-select mb-3" aria-label="Default select example" v-model="id_region">
           <option selected>Seleccione la región</option>
           <option v-for="(region, index) in regiones" :value="region.id_region" :key="index">
@@ -17,43 +17,29 @@
           </option>
         </select>
         <p>
-          <button class="btn btn-success centrado" type='submit'>Buscar</button>
+          <button class="btn btn-success centrado" v-on:click="get_points()">Buscar</button>
         </p>
-      </form>
+      </div>
       <div class="row">
         <div class="col-md-6">
-          <div>{{ point }} </div>
-          <div>{{ titulo }}</div>
-          <div id="mapid"></div>
+          <h6>Region de </h6>
+          <div id="mapita"></div>
         </div>
         <div class="col-md-6">
           <table class="table table-dark" style="width: 1000px">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Detalles</th>
+                <th scope="col">Status</th>
+                
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr v-for="(emergency, index) in this.emergencies" :value="emergency.id_emergency" :key="index">
                 <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
+                <td>{{emergency.emergency_details}}</td>
+                <td>{{emergency.status}}</td>
               </tr>
             </tbody>
           </table>
@@ -80,17 +66,18 @@ export default {
   components: {
     Navbar,
   },
-  name: 'Home',
+  name: 'Emergencias',
   data() {
     return {
       latitud: null, //Datos de nuevo punto
       longitud: null,
       regiones: [], //Datos de regiones
-      name: '',
+      region_name: '',
       points: [], //colección de puntos cargados de la BD
       message: '',
       mymap: null, //objeto de mapa(DIV)
-      id_region: 0
+      id_region: 14 ,
+      emergencies: []
     }
   },
   computed: {
@@ -119,30 +106,30 @@ export default {
       })
       this.points = [];
     },
-    obtenerID() {
-      this.clearMarkers();  // limpiamos los marcadores
-      this.get_point(this.mymap, this.id_region);  //Se agregan los puntos mediante llamada al servicio
-      this.id_region = 0; //seteamos el id que aparece en la casilla
-    },
-    async get_points(map, id_region) { //función para obtener los puntos de la BD
+    async get_points(id_region) { //función para obtener los puntos de la BD
+      this.clearMarkers();
       try {
+        // Se obtiene el nombre de la region
+        // let region = await this.$axios.get("/regions/" + this.id_region);
+        // this.region_name = region.data.nom_reg;
         //se llama el servicio
-        let response = await axios.get('http://localhost:8080/tareas/' + id_region);
+        let response = await this.$axios.get('/emergencies/region/' + this.id_region);
         console.log(response);
-        let dataPoints = response.data;
-        console.log(dataPoints);
+        this.emergencies = response.data;
+        console.log(this.emergencies);
         //Se itera por los puntos
-        dataPoints.forEach(point => {
+        this.emergencies.forEach(point => {
           //Se crea un marcador por cada punto
           let p = [point.latitud, point.longitud]
           let marker = L.marker(p, { icon: myIcon }) //se define el ícono del marcador
-            .bindPopup(point.titulo); //Se agrega un popup con el nombre
+          .bindPopup(point.emergency_details); //Se agrega un popup con el nombre
           //Se agrega a la lista
           this.points.push(marker);
         });
         //Los puntos de la lista se agregan al mapa
+        console.log(this.points)
         this.points.forEach(p => {
-          p.addTo(map)
+          p.addTo(this.mymap)
         })
       } catch (error) {
         console.log('error', error);
@@ -150,10 +137,10 @@ export default {
     },
   },
   mounted: function () {
-    this.get_regiones();
+    // this.get_regiones();
     let _this = this;
-    //Se asigna el mapa al elemento con id="mapid"
-    this.mymap = L.map('mapid').setView([-33.456, -70.648], 7);
+    //Se asigna el mapa al elemento con id="mapita"
+    this.mymap = L.map('mapita').setView([-33.456, -70.648], 7);
     //Se definen los mapas de bits de OSM
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -180,7 +167,7 @@ export default {
 }
 
 /* Estilos necesarios para definir el objeto de mapa */
-#mapid {
+#mapita {
   height: 685px;
   width: 1000px;
 }
