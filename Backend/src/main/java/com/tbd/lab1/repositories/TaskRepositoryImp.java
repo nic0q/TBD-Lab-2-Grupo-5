@@ -36,7 +36,7 @@ public class TaskRepositoryImp implements TaskRepository{
     @Override
     public List<Task> getAllTasks() {
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT id_task, description, id_emergency, id_state_task, ST_X(ST_Transform(ubication_task, 4326)) AS longitud, ST_Y(ST_Transform(ubication_task, 4326)) AS latitud  FROM \"Task\"")
+            return conn.createQuery("SELECT id_task, name, id_emergency, id_state_task, ST_X(ST_Transform(ubication_task, 4326)) AS longitud, ST_Y(ST_Transform(ubication_task, 4326)) AS latitud  FROM \"Task\"")
                     .executeAndFetch(Task.class);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -52,7 +52,7 @@ public class TaskRepositoryImp implements TaskRepository{
     @Override
     public List<Task> getTaskById(int id) {
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT id_task, description, id_emergency, id_state_task, ST_X(ST_Transform(ubication_task, 4326)) AS longitud, ST_Y(ST_Transform(ubication_task, 4326)) AS latitud FROM \"Task\" WHERE id_task = :id")
+            return conn.createQuery("SELECT id_task, name, id_emergency, id_state_task, ST_X(ST_Transform(ubication_task, 4326)) AS longitud, ST_Y(ST_Transform(ubication_task, 4326)) AS latitud FROM \"Task\" WHERE id_task = :id")
                     .addParameter("id", id)
                     .executeAndFetch(Task.class);
         } catch (Exception e) {
@@ -70,9 +70,9 @@ public class TaskRepositoryImp implements TaskRepository{
     public Task createTask(Task task){
         try(Connection conn = sql2o.open()){
             String coordenadas = task.getLongitud().toString() + " " + task.getLatitud().toString();
-            conn.createQuery("INSERT INTO \"Task\" (description,fk_emergency,fk_state_task, ubication_task)"+
-                            "values (:taskDescription,:taskFkEmergency,:taskFkState, ST_GeomFromText('POINT(" + coordenadas + ")' , 4326 ))")
-                    .addParameter("taskDescription", task.getDescription())
+            conn.createQuery("INSERT INTO \"Task\" (name,fk_emergency,fk_state_task, ubication_task)"+
+                            "values (:taskName,:taskFkEmergency,:taskFkState, ST_GeomFromText('POINT(" + coordenadas + ")' , 4326 ))")
+                    .addParameter("taskName", task.getName())
                     .addParameter("taskFkEmergency", task.getFk_emergency())
                     .addParameter("taskFkState", task.getFk_state_task())
                     .executeUpdate().getKey();
@@ -92,9 +92,9 @@ public class TaskRepositoryImp implements TaskRepository{
     public boolean editTask(Task task) {
         try(Connection conn = sql2o.open()){
             String coordenadas = task.getLongitud().toString() + " " + task.getLatitud().toString();
-            conn.createQuery("UPDATE \"Task\" SET description = :taskDescription, fk_emergency = :taskFkEmergency," +
+            conn.createQuery("UPDATE \"Task\" SET name = :taskName, fk_emergency = :taskFkEmergency," +
                             " fk_state_task = :taskFkState, ubication_task = ST_GeomFromText('POINT(" + coordenadas + ")' , 4326 ) WHERE id_task = :taskId")
-                    .addParameter("taskDescription", task.getDescription())
+                    .addParameter("taskName", task.getName())
                     .addParameter("taskFkEmergency", task.getFk_emergency())
                     .addParameter("taskFkState", task.getFk_state_task())
                     .addParameter("voluntaryId", task.getId())
