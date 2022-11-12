@@ -12,8 +12,8 @@
       <div>
         <select class="form-select mb-3" aria-label="Default select example" v-model="id_region">
           <option selected>Seleccione la región</option>
-          <option v-for="(region, index) in regiones" :value="region.id_region" :key="index">
-            {{ region.nombre }}
+          <option v-for="(region, index) in regiones" :value="region.gid" :key="index">
+            {{ region.nom_reg }}
           </option>
         </select>
         <p>
@@ -22,7 +22,7 @@
       </div>
       <div class="row">
         <div class="col-md-6">
-          <h6>Region de </h6>
+          <h3>{{this.region_name}}</h3>
           <div id="mapita"></div>
         </div>
         <div class="col-md-6">
@@ -32,7 +32,8 @@
                 <th scope="col">#</th>
                 <th scope="col">Detalles</th>
                 <th scope="col">Status</th>
-                
+                <th scope="col">Longitud</th>
+                <th scope="col">Latitud</th>
               </tr>
             </thead>
             <tbody>
@@ -40,6 +41,8 @@
                 <th scope="row">1</th>
                 <td>{{emergency.emergency_details}}</td>
                 <td>{{emergency.status}}</td>
+                <td>{{emergency.longitud}}</td>
+                <td>{{emergency.latitud}}</td>
               </tr>
             </tbody>
           </table>
@@ -94,7 +97,7 @@ export default {
   methods: {
     async get_regiones() {
       try {
-        let response = await this.$axios.get("/regiones");
+        let response = await this.$axios.get("/regions");
         this.regiones = response.data;
       } catch (error) {
         console.log("error", error);
@@ -106,12 +109,12 @@ export default {
       })
       this.points = [];
     },
-    async get_points(id_region) { //función para obtener los puntos de la BD
+    async get_points() { //función para obtener los puntos de la BD
       this.clearMarkers();
       try {
         // Se obtiene el nombre de la region
-        // let region = await this.$axios.get("/regions/" + this.id_region);
-        // this.region_name = region.data.nom_reg;
+        let region = await this.$axios.get("/regions/" + this.id_region);
+        this.region_name = region.data[0].nom_reg;
         //se llama el servicio
         let response = await this.$axios.get('/emergencies/region/' + this.id_region);
         console.log(response);
@@ -131,13 +134,14 @@ export default {
         this.points.forEach(p => {
           p.addTo(this.mymap)
         })
+        this.mymap.flyTo([this.emergencies[0].latitud, this.emergencies[0].longitud], 12);
       } catch (error) {
         console.log('error', error);
       }
     },
   },
   mounted: function () {
-    // this.get_regiones();
+    this.get_regiones();
     let _this = this;
     //Se asigna el mapa al elemento con id="mapita"
     this.mymap = L.map('mapita').setView([-33.456, -70.648], 7);

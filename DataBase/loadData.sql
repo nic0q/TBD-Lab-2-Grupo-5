@@ -105,6 +105,7 @@ INSERT INTO "Institution" (name, name_coordinator) VALUES ('ONG', 'Pablo');
 INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Terremoto', 1, ST_GeomFromText('POINT(-70.650844 -33.437871)' , 4326 ), 'Activo');
 INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Incendio', 2, ST_GeomFromText('POINT(-70.660550 -33.461378)' , 4326 ), 'Activo');
 INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Inundacion', 3, ST_GeomFromText('POINT(-72.953223 -41.479667)' , 4326 ), 'Activo');
+INSERT INTO "Emergency"(emergency_details, id_institution, ubication_emergency, status) VALUES ('Fuga de gas', 1, ST_GeomFromText('POINT(-70.387151 -23.7)' , 4326 ), 'activo');
 INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Invasion Alienigena', 4, ST_GeomFromText('POINT(-70.702027 -33.496740)' , 4326 ), 'Activo');
 INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Tsunami', 5, ST_GeomFromText('POINT(-70.397190 -23.638113)' , 4326 ), 'Activo');
 INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Gato en Arbol', 6, ST_GeomFromText('POINT(-70.735232 -33.426330)' , 4326 ), 'Activo');
