@@ -8,9 +8,7 @@ public class Emergency{
     private String emergency_details;
     private String status;
     private Integer id_institution;
-
     private Double latitud;
-
     private Double longitud;
 
 
@@ -104,18 +102,34 @@ public class Emergency{
 
 
 
+    /**
+     * Obtiene la latitud (double) de una Emergencia
+     * @return Double
+     */
     public Double getLatitud() {
         return latitud;
     }
 
+    /**
+     * Modifica la latitud (double) de una Emergencia
+     * @param latitud
+     */
     public void setLatitud(Double latitud) {
         this.latitud = latitud;
     }
 
+    /**
+     * Obtiene la longitud (double) de una Emergencia
+     * @return Double
+     */
     public Double getLongitud() {
         return longitud;
     }
 
+    /**
+     * Modifica la longitud (double) de una Emergencia
+     * @param longitud
+     */
     public void setLongitud(Double longitud) {
         this.longitud = longitud;
     }

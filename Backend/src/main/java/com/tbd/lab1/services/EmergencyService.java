@@ -111,6 +111,13 @@ public class EmergencyService {
     }
 
 
+    /**
+     * Método que conecta la ruta /emergencies/region/{id} con el método obtieneEmergenciasPorRegion() del
+     * repositorio de Emergency. Retorna una lista con todas las emergencias que se encuentran dentro de cierta
+     * región por su id.
+     * @param id
+     * @return list
+     */
     @GetMapping("/emergencies/region/{id}")
     public List<Emergency> getEmergenciesByRegion(@PathVariable("id") Integer id){
         return emergencyRepository.obtieneEmergenciasPorRegion(id);

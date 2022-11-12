@@ -36,7 +36,7 @@ public class TaskRepositoryImp implements TaskRepository{
     @Override
     public List<Task> getAllTasks() {
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM \"Task\"")
+            return conn.createQuery("SELECT id_task, description, id_emergency, id_state_task, ST_X(ST_Transform(ubication_task, 4326)) AS longitud, ST_Y(ST_Transform(ubication_task, 4326)) AS latitud  FROM \"Task\"")
                     .executeAndFetch(Task.class);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -52,7 +52,7 @@ public class TaskRepositoryImp implements TaskRepository{
     @Override
     public List<Task> getTaskById(int id) {
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM \"Task\" WHERE id_task = :id")
+            return conn.createQuery("SELECT id_task, description, id_emergency, id_state_task, ST_X(ST_Transform(ubication_task, 4326)) AS longitud, ST_Y(ST_Transform(ubication_task, 4326)) AS latitud FROM \"Task\" WHERE id_task = :id")
                     .addParameter("id", id)
                     .executeAndFetch(Task.class);
         } catch (Exception e) {

@@ -25,7 +25,7 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     @Override
     public List<Emergency> getAllEmergencies(){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT id_emergency, emergency_details, status, id_institution , st_y(st_astext(ubication_ emergency)) AS latitud, st_x(st_astext(ubication_ emergency)) AS longitud FROM \"Emergency\"").
+            return conn.createQuery("SELECT em.id_emergency, em.emergency_details, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em").
                     executeAndFetch(Emergency.class);
         } catch(Exception e){
             System.out.println(e.getMessage());
@@ -43,7 +43,7 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     @Override
     public List<Emergency> getEmergencyById(int id){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT id_emergency, emergency_details, status, id_institution, st_y(st_astext(ubication_ emergency)) AS latitud, st_x(st_astext(ubication_ emergency)) AS longitud FROM \"Emergency\" WHERE id_emergency = :id")
+            return conn.createQuery("SELECT em.id_emergency, em.emergency_details, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em WHERE em.id_emergency = :id")
                     .addParameter("id",id)
                     .executeAndFetch(Emergency.class);
         }catch(Exception e){
@@ -143,11 +143,16 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     }
 
 
-    // id de parámetro es el de la tabla región para filtrar
+    /**
+     * Método que obtiene todas las emergencias por id de región.
+     * Retorna una lista con las emergencias.
+     * @param id
+     * @return list
+     */
     @Override
     public List<Emergency> obtieneEmergenciasPorRegion(Integer id){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM 'Emergency' AS e INNER JOIN division_regional AS r ON ST_WITHIN(e.ubication_emergency, r.geom) WHERE r.cod_reg = :id")
+            return conn.createQuery("SELECT em.id_emergency, em.emergency_details, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em INNER JOIN \"Region\" AS r ON ST_WITHIN(em.ubication_emergency, ST_SetSRID(r.geom,4326)) WHERE r.gid = :id;")
                     .addParameter("id",id)
                     .executeAndFetch(Emergency.class);
         }catch(Exception e){

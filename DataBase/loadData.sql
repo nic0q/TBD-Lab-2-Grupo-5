@@ -100,7 +100,7 @@ INSERT INTO "Institution" (name, name_coordinator) VALUES ('ONG', 'Pablo');
 -- 5. Emergency (10)
 -------------------------------------------------------
 
-INSERT INTO "Emergency" (emergency_details, id_institution, status) VALUES ('Terremoto', '1', 'Creado');
+INSERT INTO "Emergency" (emergency_details, id_institution, status, ubication_emergency) VALUES ('Terremoto', '1', 'Creado', ST_GeomFromText('POINT(-70.665676 -33.444925 )', 4326 ));
 INSERT INTO "Emergency" (emergency_details, id_institution, status) VALUES ('Incendio', '2', 'Creado');
 INSERT INTO "Emergency" (emergency_details, id_institution, status) VALUES ('Inundacion', '3', 'Creado');
 INSERT INTO "Emergency" (emergency_details, id_institution, status) VALUES ('Huracan', '4', 'Creado');
