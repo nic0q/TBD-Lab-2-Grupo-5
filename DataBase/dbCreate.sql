@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS "State_task"(
 -------------------------------------------------------
 CREATE TABLE IF NOT EXISTS "Task"(
     "id_task" SERIAL NOT NULL,
-    "description" VARCHAR(300),
+    "name" VARCHAR(300),
 	"id_emergency" int,
 	"ubication_task" GEOMETRY(point),
 	"id_state_task" int,
