@@ -3,7 +3,7 @@ package com.tbd.lab1.models;
 
 public class Task {
     private Integer id_task;
-    private String description;
+    private String name;
     private Integer id_emergency;
     private Integer id_state_task;
     private Double  latitud;
@@ -29,16 +29,16 @@ public class Task {
      * Obtiene la descripción (string) de una tarea
      * @return String
      */
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
     /**
      * Modifica la descripción (string) de una tarea
-     * @param description
+     * @param name
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -113,7 +113,7 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "id_task=" + id_task +
-                ", description='" + description + '\'' +
+                ", description='" + name + '\'' +
                 ", id_emergency=" + id_emergency +
                 ", id_state_task=" + id_state_task +
                 ", latitud=" + latitud +
