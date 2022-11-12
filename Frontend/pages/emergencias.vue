@@ -117,7 +117,7 @@ export default {
         let region = await this.$axios.get("/regions/" + this.id_region);
         this.region_name = region.data[0].nom_reg;
         //se llama el servicio
-        let response = await this.$axios.get('/emergencies/region/' + this.id_region);
+        let response = await this.$axios.get('/emergencies/regions/' + this.id_region);
         this.emergencies = response.data;
         //Se itera por los puntos
         this.emergencies.forEach(point => {
