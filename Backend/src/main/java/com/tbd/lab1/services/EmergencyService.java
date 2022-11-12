@@ -118,7 +118,7 @@ public class EmergencyService {
      * @param id
      * @return list
      */
-    @GetMapping("/emergencies/region/{id}")
+    @GetMapping("/emergencies/regions/{id}")
     public List<Emergency> getEmergenciesByRegion(@PathVariable("id") Integer id){
         return emergencyRepository.obtieneEmergenciasPorRegion(id);
     }
