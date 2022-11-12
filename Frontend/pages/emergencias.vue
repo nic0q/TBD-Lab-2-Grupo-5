@@ -44,8 +44,11 @@
             </table>
           </div>
           <div class="col-md-6" style="margin-top: 50px">
-            <h3>{{ this.region_name }}</h3>
-            <div id="mapita"></div>
+            <div>
+              <h3 v-if="!this.region_name === ''">{{ this.region_name }}</h3>
+              <h3 v-else>Chile</h3>
+              <div id="mapita"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -64,7 +67,6 @@ const LeafIcon = L.Icon.extend({
 const myIcon = new LeafIcon({ iconUrl: icon });
 //librería axios
 
-import axios from 'axios';
 import Navbar from "../components/Navbar.vue";
 export default {
   components: {
@@ -170,6 +172,7 @@ export default {
   align-items: center;
   background: #262626;
   color: white;
+  overflow-x: hidden;
 }
 
 .table {
@@ -178,8 +181,8 @@ export default {
 
 /* Estilos necesarios para definir el objeto de mapa */
 #mapita {
-  height: 685px;
-  width: 1100px;
+  height: 781px;
+  width: 1070px;
 }
 
 .text_centrado {
