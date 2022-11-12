@@ -110,9 +110,9 @@ public class EmergencyService {
         }
     }
 
-    /*
+
     @GetMapping("/emergencies/region/{id}")
     public List<Emergency> getEmergenciesByRegion(@PathVariable("id") Integer id){
         return emergencyRepository.obtieneEmergenciasPorRegion(id);
-    }*/
+    }
 }

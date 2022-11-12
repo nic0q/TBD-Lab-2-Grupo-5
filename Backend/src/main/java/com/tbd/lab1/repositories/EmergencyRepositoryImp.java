@@ -25,7 +25,7 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     @Override
     public List<Emergency> getAllEmergencies(){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM \"Emergency\"").
+            return conn.createQuery("SELECT id_emergency, emergency_details, status, id_institution , st_y(st_astext(ubication_ emergency)) AS latitud, st_x(st_astext(ubication_ emergency)) AS longitud FROM \"Emergency\"").
                     executeAndFetch(Emergency.class);
         } catch(Exception e){
             System.out.println(e.getMessage());
@@ -43,7 +43,7 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     @Override
     public List<Emergency> getEmergencyById(int id){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM \"Emergency\" WHERE id_emergency = :id")
+            return conn.createQuery("SELECT id_emergency, emergency_details, status, id_institution, st_y(st_astext(ubication_ emergency)) AS latitud, st_x(st_astext(ubication_ emergency)) AS longitud FROM \"Emergency\" WHERE id_emergency = :id")
                     .addParameter("id",id)
                     .executeAndFetch(Emergency.class);
         }catch(Exception e){
@@ -142,17 +142,17 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
         }
     }
 
-    /*
+
     // id de parámetro es el de la tabla región para filtrar
     @Override
     public List<Emergency> obtieneEmergenciasPorRegion(Integer id){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM 'Emergency' AS e INNER JOIN division_regional AS r ON ST_WITHIN(e.location, r.geom) WHERE r.cod_reg = :id")
+            return conn.createQuery("SELECT * FROM 'Emergency' AS e INNER JOIN division_regional AS r ON ST_WITHIN(e.ubication_emergency, r.geom) WHERE r.cod_reg = :id")
                     .addParameter("id",id)
                     .executeAndFetch(Emergency.class);
         }catch(Exception e){
             System.out.println(e.getMessage());
             return null;
         }
-    }*/
+    }
 }
