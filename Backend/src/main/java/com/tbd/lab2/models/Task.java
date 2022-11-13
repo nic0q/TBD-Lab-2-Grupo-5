@@ -1,6 +1,8 @@
 package com.tbd.lab2.models;
 
-
+/**
+ * Clase que representa una tarea
+ */
 public class Task {
     private Integer id_task;
     private String name;

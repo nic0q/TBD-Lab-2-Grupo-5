@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.tbd.lab2.models.Region;
 
+/**
+ * Interface para RegionRepository
+ */
 public interface RegionRepository {
     public List<Region> getAllRegions();
     public List<Region> getRegionById(int id);

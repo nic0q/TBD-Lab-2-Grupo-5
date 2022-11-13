@@ -13,7 +13,12 @@ import java.util.List;
 public class TaskForEmergencyRepositoryImp implements TaskForEmergencyRepository {
     @Autowired
     private Sql2o sql2o;
-
+    
+    
+    /** 
+     * Metodo que retorna todas las tareas de emergencia de la base de datos
+     * @return List<TaskForEmergency>
+     */
     @Override
     public List<TaskForEmergency> getTaskVoluntary(){
         try(Connection conn = sql2o.open()){
