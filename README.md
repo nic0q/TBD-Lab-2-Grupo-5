@@ -1,5 +1,5 @@
 # Laboratorio N°2 - Laboratorio de Taller de Base de Datos
-Este repositorio contiene todos los archivos relacionados con el Laboratorio N°1 del
+Este repositorio contiene todos los archivos relacionados con el Laboratorio N°2 del
 Laboratorio de Taller de Base de Datos (Base de Datos Avanzadas 13317) desarrollado
 por el equipo 5. 
 
