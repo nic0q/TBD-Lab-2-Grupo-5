@@ -7,13 +7,12 @@
     <div>
         <Navbar></Navbar>
         <div class="home">
-            <h1 style="margin: 70px">Tareas menos voluntarios</h1>  
-            <div class="row" style="height: 700px">
+            <h2 style="margin: 70px">Ordena tareas de cada emergencia por menos voluntarios</h2>
+            <div class="row" style="height: 1000px">
                 <div class="col-md-6">
                     <table class="table" style="width: 800px">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col"></th>
                                 <th scope="col">ID</th>
                                 <th scope="col">Emergencia(s)</th>
                                 <th scope="col">Status</th>
@@ -21,14 +20,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(emergency, index) in this.emergencies" :value="emergency.id_emergency"
-                                :key="index" class="table-light">
-                                <img class="check_button" v-on:click="get_tasks(emergency.id_emergency)"
-                                    style="margin-left: 10px; margin-top: 10px;" src="../static/check30.png" alt="Eye" />
-                                <td>{{ emergency.id_emergency }}</td>
-                                <td>{{ emergency.name }}</td>
-                                <td>{{ emergency.status }}</td>
-                                <td>({{ emergency.latitud }}, {{ emergency.longitud }})</td>
+                            <tr v-for="(emergency, index) in this.emergencies" :value="emergency.id_emergency"   v-on:click="get_tasks(emergency.id_emergency)"
+                                :key="index" class="table-light check_button">
+                                <td :class="clicked === emergency.id_emergency ? 'bg-primary text-white' : ''">{{ emergency.id_emergency }}</td>
+                                <td :class="clicked === emergency.id_emergency ? 'bg-primary text-white' : ''">{{ emergency.name }}</td>
+                                <td :class="clicked === emergency.id_emergency ? 'bg-primary text-white' : ''">{{ emergency.status }}</td>
+                                <td :class="clicked === emergency.id_emergency ? 'bg-primary text-white' : ''">({{ emergency.latitud }}, {{ emergency.longitud }})</td>
                             </tr>
                         </tbody>
                     </table>
@@ -80,6 +77,7 @@ export default {
             longitud: null,
             emergencies: [], //Datos de regiones
             tasks: [],
+            clicked: null,
             name: '',
             points: [], //colección de puntos cargados de la BD
             message: '',
@@ -97,6 +95,7 @@ export default {
           }
         },
         async get_tasks(id_emergency){
+            this.clicked = id_emergency;
             try {
             let response = await this.$axios.get("/tasks-for-emergency/"  + id_emergency)
             this.tasks = response.data;
@@ -137,6 +136,9 @@ button.centrado {
     width: 110px;
     margin-left: 50%;
     transform: translateX(-50%);
+}
+.white{
+    background-color: aliceblue;
 }
 .check_button{
     cursor: pointer;

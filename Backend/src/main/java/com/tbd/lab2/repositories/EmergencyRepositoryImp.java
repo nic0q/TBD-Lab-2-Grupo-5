@@ -148,12 +148,16 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
      * Método que obtiene todas las emergencias por id de región.
      * Retorna una lista con las emergencias.
      * @param id
-     * @return list
+     * @return List<Emergency>
      */
     @Override
     public List<Emergency> obtieneEmergenciasPorRegion(Integer id){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT em.id_emergency, em.name, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em INNER JOIN \"Region\" AS r ON ST_WITHIN(em.ubication_emergency, ST_SetSRID(r.geom,4326)) WHERE r.gid = :id;")
+            return conn.createQuery("SELECT em.id_emergency, em.name, em.id_institution,"+
+            "ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status "+
+            "FROM \"Emergency\""+
+            "AS em INNER JOIN \"Region\" AS r ON ST_WITHIN(em.ubication_emergency, ST_SetSRID(r.geom,4326))"+
+            "WHERE r.gid = :id;")
                     .addParameter("id",id)
                     .executeAndFetch(Emergency.class);
         }catch(Exception e){
