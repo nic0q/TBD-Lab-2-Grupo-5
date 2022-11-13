@@ -7,7 +7,7 @@
     <div>
         <Navbar></Navbar>
         <div class="home">
-            <h1 style="margin: 70px">Emergencias con menos voluntarios</h1>
+            <h1 style="margin: 70px">Tareas menos voluntarios</h1>  
             <div class="row" style="height: 700px">
                 <div class="col-md-6">
                     <table class="table" style="width: 800px">
@@ -137,5 +137,8 @@ button.centrado {
     width: 110px;
     margin-left: 50%;
     transform: translateX(-50%);
+}
+.check_button{
+    cursor: pointer;
 }
 </style>
