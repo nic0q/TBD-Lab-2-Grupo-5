@@ -21,9 +21,9 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="emergency_details" class="control-label">Detalles</label>
-              <textarea rows="11" v-model="formData.emergency_details" type="large-text" class="form-control area" id="name"
-                placeholder="Ingrese detalles emergencia" />
+              <label for="name" class="control-label">Nombre</label>
+              <textarea rows="11" v-model="formData.name" type="large-text" class="form-control area" id="name"
+                placeholder="Nombre emergencia" />
             </div>
           </div>
        
@@ -112,7 +112,7 @@ export default {
     return {
       formData: {
         id_emergency: this.generateId(),
-        emergency_details: "",
+        name: "",
         status: "Activo",
         id_institution: "",
       },

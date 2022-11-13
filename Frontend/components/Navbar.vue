@@ -11,7 +11,7 @@
         <a class="nav-link text-light" href="http://localhost:3000/createEmergency">Ingresar Emergencia <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-light" href="http://localhost:3000/tareas">Tareas</a>
+        <a class="nav-link text-light" href="http://localhost:3000/topEmergencies">Top Emergencies</a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-light" href="http://localhost:3000/emergencias">Emergencias</a>

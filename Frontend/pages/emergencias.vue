@@ -13,7 +13,7 @@
             <h1>Emergencias por región</h1>
             <span>Selecciona la región para buscar emergencias</span>
             <div>
-              <select class="form-select mb-3" aria-label="Default select example" v-model="id_region">
+              <select class="form-select form-select-lg mb-3" aria-label="Default select example" v-model="id_region">
                 <option :value="-1" selected>Ver todas</option>
                 <option v-for="(region, index) in regiones" :value="region.gid" :key="index">
                   {{ region.nom_reg }}
@@ -28,7 +28,7 @@
               <thead class="thead-dark">
                 <tr>
                   <th scope="col"></th>
-                  <th scope="col">Detalles</th>
+                  <th scope="col">Nombre</th>
                   <th scope="col">Status</th>
                   <th scope="col">Latitud / Longitud</th>
                 </tr>
@@ -37,7 +37,7 @@
                 <tr v-for="(emergency, index) in this.emergencies" :value="emergency.id_emergency" :key="index">
                   <img class="eye_button" v-on:click="goToPoint(emergency.latitud, emergency.longitud)" style="margin-left: 10px"
                     src="../static/eye-solid.svg" alt="Eye" />
-                  <td>{{ emergency.emergency_details }}</td>
+                  <td>{{ emergency.name }}</td>
                   <td>{{ emergency.status }}</td>
                   <td>({{ emergency.latitud }}, {{ emergency.longitud }})</td>
                 </tr>
@@ -146,7 +146,7 @@ export default {
         this.emergencies.forEach(point => {
           //Se crea un marcador por cada punto
           let p = [point.latitud, point.longitud]
-          const popup = point.emergency_details + " (" + point.latitud + "," + point.longitud + ")";
+          const popup = point.name + " (" + point.latitud + "," + point.longitud + ")";
           let marker = L.marker(p, { icon: myIcon }).bindPopup(popup); //Se agrega un popup con el nombre y se define el ícono del marcador
           //Se agrega a la lista
           this.points.push(marker);

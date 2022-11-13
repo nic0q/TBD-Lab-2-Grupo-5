@@ -26,7 +26,7 @@
                                 <img class="check_button" v-on:click="get_tasks(emergency.id_emergency)"
                                     style="margin-left: 10px; margin-top: 10px;" src="../static/check30.png" alt="Eye" />
                                 <td>{{ emergency.id_emergency }}</td>
-                                <td>{{ emergency.emergency_details }}</td>
+                                <td>{{ emergency.name }}</td>
                                 <td>{{ emergency.status }}</td>
                                 <td>({{ emergency.latitud }}, {{ emergency.longitud }})</td>
                             </tr>
