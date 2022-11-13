@@ -115,7 +115,7 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "id_task=" + id_task +
-                ", description='" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", id_emergency=" + id_emergency +
                 ", id_state_task=" + id_state_task +
                 ", latitud=" + latitud +

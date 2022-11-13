@@ -5,7 +5,7 @@ package com.tbd.lab2.models;
  */
 public class Emergency{
     private Integer id_emergency;
-    private String emergency_details;
+    private String name;
     private String status;
     private Integer id_institution;
     private Double latitud;
@@ -31,20 +31,20 @@ public class Emergency{
 
 
     /**
-     * Obtiene los detalles (string) de una Emergencia
+     * Obtiene el nombre (string) de una Emergencia
      * @return String
      */
-    public String getEmergency_details() {
-        return emergency_details;
+    public String getName() {
+        return name;
     }
 
 
     /**
-     * Modifica los detalles (string) de una Emergencia
-     * @param emergency_details
+     * Modifica el nombre (string) de una Emergencia
+     * @param name
      */
-    public void setEmergency_details(String emergency_details) {
-        this.emergency_details = emergency_details;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -92,7 +92,7 @@ public class Emergency{
     public String toString() {
         return "Emergency{" +
                 "id_emergency=" + id_emergency +
-                ", emergency_details='" + emergency_details + '\'' +
+                ", name='" + name + '\'' +
                 ", status='" + status + '\'' +
                 ", id_institution=" + id_institution +
                 ", latitud=" + latitud +

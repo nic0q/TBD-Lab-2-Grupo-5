@@ -26,7 +26,7 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     @Override
     public List<Emergency> getAllEmergencies(){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT em.id_emergency, em.emergency_details, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em").
+            return conn.createQuery("SELECT em.id_emergency, em.name, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em").
                     executeAndFetch(Emergency.class);
         } catch(Exception e){
             System.out.println(e.getMessage());
@@ -44,7 +44,7 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     @Override
     public List<Emergency> getEmergencyById(int id){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT em.id_emergency, em.emergency_details, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em WHERE em.id_emergency = :id")
+            return conn.createQuery("SELECT em.id_emergency, em.name, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em WHERE em.id_emergency = :id")
                     .addParameter("id",id)
                     .executeAndFetch(Emergency.class);
         }catch(Exception e){
@@ -67,10 +67,10 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     public Emergency createEmergency(Emergency emergency){
         String coordenadas = emergency.getLongitud().toString() + " " + emergency.getLatitud().toString();
         try(Connection conn = sql2o.open()){
-            conn.createQuery("INSERT INTO \"Emergency\" (id_emergency, emergency_details, id_institution, status, ubication_emergency)" +
-                            "values (:id_emergency, :emergencyDetails, :emergencyInstitution, :emergencyStatus,  ST_GeomFromText(POINT(" + coordenadas + ") , 4326 ))")
+            conn.createQuery("INSERT INTO \"Emergency\" (id_emergency, name, id_institution, status, ubication_emergency)" +
+                            "values (:id_emergency, :emergencyName, :emergencyInstitution, :emergencyStatus,  ST_GeomFromText(POINT(" + coordenadas + ") , 4326 ))")
                     .addParameter("id_emergency", emergency.getId_emergency())
-                    .addParameter("emergencyDetails", emergency.getEmergency_details())
+                    .addParameter("emergencyName", emergency.getName())
                     .addParameter("emergencyInstitution", emergency.getId_institution())
                     .addParameter("emergencyStatus", emergency.getStatus())
                     .executeUpdate().getKey();
@@ -93,9 +93,9 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     public boolean editEmergency(Emergency emergency){
         try(Connection conn = sql2o.open()){
             String coordenadas = emergency.getLongitud().toString() + " " + emergency.getLatitud().toString();
-            conn.createQuery("UPDATE \"Emergency\" SET emergency_details = :emergencyDetails, id_institution = :emergencyInstitution, status = :emergencyStatus," +
+            conn.createQuery("UPDATE \"Emergency\" SET name = :emergencyName, id_institution = :emergencyInstitution, status = :emergencyStatus," +
                             "ubication_emergency = ST_GeomFromText(POINT(" + coordenadas + ") , 4326 ) WHERE id_emergency = :emergencyId")
-                    .addParameter("emergencyDetails", emergency.getEmergency_details())
+                    .addParameter("emergencyName", emergency.getName())
                     .addParameter("emergencyInstitution", emergency.getId_institution())
                     .addParameter("emergencyStatus", emergency.getStatus())
                     .addParameter("emergencyId", emergency.getId_emergency())
@@ -153,7 +153,7 @@ public class EmergencyRepositoryImp implements EmergencyRepository {
     @Override
     public List<Emergency> obtieneEmergenciasPorRegion(Integer id){
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT em.id_emergency, em.emergency_details, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em INNER JOIN \"Region\" AS r ON ST_WITHIN(em.ubication_emergency, ST_SetSRID(r.geom,4326)) WHERE r.gid = :id;")
+            return conn.createQuery("SELECT em.id_emergency, em.name, em.id_institution, ST_X(ST_Transform(em.ubication_emergency, 4326)) AS longitud, ST_Y(ST_Transform(em.ubication_emergency, 4326)) AS latitud, em.status FROM \"Emergency\" AS em INNER JOIN \"Region\" AS r ON ST_WITHIN(em.ubication_emergency, ST_SetSRID(r.geom,4326)) WHERE r.gid = :id;")
                     .addParameter("id",id)
                     .executeAndFetch(Emergency.class);
         }catch(Exception e){

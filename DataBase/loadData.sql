@@ -102,17 +102,17 @@ INSERT INTO "Institution" (name, name_coordinator) VALUES ('ONG', 'Pablo');
 -- 5. Emergency (10)
 -------------------------------------------------------
 
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Terremoto', 1, ST_GeomFromText('POINT(-70.650844 -33.43787)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Incendio', 2, ST_GeomFromText('POINT(-70.660551 -33.46137)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Inundacion', 3, ST_GeomFromText('POINT(-72.953223 -41.479667)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Fuga de gas', 1, ST_GeomFromText('POINT(-70.387151 -23.709667)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Invasion Alienigena', 4, ST_GeomFromText('POINT(-70.702027 -33.496740)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Tsunami', 5, ST_GeomFromText('POINT(-70.397190 -23.638113)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Gato en Arbol', 6, ST_GeomFromText('POINT(-70.735232 -33.426330)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Derrumbe', 7, ST_GeomFromText('POINT(-70.610955 -33.46384)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Accidente automovilistico', 8, ST_GeomFromText('POINT(-70.394970 -23.653598)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Murallas vandalizadas', 9, ST_GeomFromText('POINT(-70.40099 -23.664877)' , 4326 ), 'Activo');
-INSERT INTO "Emergency" (emergency_details, id_institution, ubication_emergency, status) VALUES ('Gente atrapada', 10, ST_GeomFromText('POINT(-72.931732 -41.468872)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Terremoto', 1, ST_GeomFromText('POINT(-70.650844 -33.43787)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Incendio', 2, ST_GeomFromText('POINT(-70.660551 -33.46137)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Inundacion', 3, ST_GeomFromText('POINT(-72.953223 -41.479667)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Fuga de gas', 1, ST_GeomFromText('POINT(-70.387151 -23.709667)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Invasion Alienigena', 4, ST_GeomFromText('POINT(-70.702027 -33.496740)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Tsunami', 5, ST_GeomFromText('POINT(-70.397190 -23.638113)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Gato en Arbol', 6, ST_GeomFromText('POINT(-70.735232 -33.426330)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Derrumbe', 7, ST_GeomFromText('POINT(-70.610955 -33.46384)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Accidente automovilistico', 8, ST_GeomFromText('POINT(-70.394970 -23.653598)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Murallas vandalizadas', 9, ST_GeomFromText('POINT(-70.40099 -23.664877)' , 4326 ), 'Activo');
+INSERT INTO "Emergency" (name, id_institution, ubication_emergency, status) VALUES ('Gente atrapada', 10, ST_GeomFromText('POINT(-72.931732 -41.468872)' , 4326 ), 'Activo');
 
 
 -------------------------------------------------------

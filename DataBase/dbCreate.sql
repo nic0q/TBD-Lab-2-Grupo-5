@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS "Institution"(
 -------------------------------------------------------
 CREATE TABLE IF NOT EXISTS "Emergency" (
     "id_emergency" SERIAL NOT NULL,
-    "emergency_details" VARCHAR(500) NOT NULL,
+    "name" VARCHAR(500) NOT NULL,
 	"id_institution" int,
 	"ubication_emergency" GEOMETRY (point),
     "status" VARCHAR(20) NOT NULL,
