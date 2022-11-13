@@ -22,10 +22,10 @@ public class TaskForEmergencyService {
 
     @GetMapping("/tasks-for-emergency")
     public List<TaskForEmergency> getTaskVoluntary(){
-        return taskForEmergencyRepository. getTaskVoluntary();
+        return taskForEmergencyRepository.getTaskVoluntary();
     }
     @GetMapping("/tasks-for-emergency/{id}")
     public List<TaskForEmergency> getTaskVoluntaryByEmergency(@PathVariable("id") int id){
-        return taskForEmergencyRepository. getTaskVoluntaryByEmergency(id);
+        return getTaskVoluntary().stream().filter(taskForEmergency -> taskForEmergency.getId_emergency() == id).toList();
     }
 }
