@@ -46,8 +46,7 @@
           </div>
           <div class="col-md-6" style="margin-top: 50px">
             <div>
-              <h3 v-if="!this.region_name == ''">{{ this.region_name }}</h3>
-              <h3 v-else>Chile</h3>
+              <h3>{{ this.region_name }}</h3>
               <div id="mapita"></div>
             </div>
           </div>
@@ -127,8 +126,8 @@ export default {
       this.emergencies = response.data;
       this.emergencies.length === 0 ? this.no_emergencies = true : this.no_emergencies = false;
     },
-    async get_region_name(){
-      let region = await this.$axios.get("/regions/" + this.id_region);
+    async get_region_name(id_region){
+      let region = await this.$axios.get("/regions/" + id_region);
       this.region_name = region.data[0].nom_reg;
     },
     async get_points() { //función para obtener los puntos de la BD
@@ -137,9 +136,10 @@ export default {
         // Se obtiene el nombre de la region
         if(this.id_region === -1){
           await this.get_emergencies();
+          this.region_name = "Chile";
         }
         else{
-          await this.get_region_name();
+          await this.get_region_name(this.id_region);
           await this.get_emergencies_by_region();
         }
         //Se itera por los puntos
