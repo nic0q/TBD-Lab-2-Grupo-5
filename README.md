@@ -98,5 +98,5 @@ npm run dev
 ```
 8. Con esto ya tenemos levantado FrontEnd y Backend
 9. Para probar el CRUD de una tabla, debemos colocar la ruta en Postman (Por ejemplo, **http://127.0.0.1:8000/institutions**). Luego seleccionar uno de los métodos a aplicar, dependiendo de si quieres crear, mostrar, editar o eliminar un elemento.
-10. Para ir a la vista de emergencias con menos voluntarios ir a **http://localhost:3000/topEmergencies**
-11. Para ir a la vista de emergencias por región ir a **http://localhost:3000/emergencias**
+10. Para ir a la vista de emergencias con menos voluntarios ir a **http://localhost:3000/tareas-menos-voluntarios**
+11. Para ir a la vista de emergencias por región ir a **http://localhost:3000/emergencias-region**
