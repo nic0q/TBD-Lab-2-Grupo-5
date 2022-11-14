@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tbd.lab2.models.TaskForEmergency;
 import com.tbd.lab2.repositories.TaskForEmergencyRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,8 +35,8 @@ public class TaskForEmergencyService {
     public List<TaskForEmergency> getTaskVoluntary(){
         return taskForEmergencyRepository.getTaskVoluntary();
     }
-    
-    /** 
+
+    /**
      * Metodo que conecta la ruta /tasks-for-emergency/{id} con la funcion getTaskVoluntaryByEmergency
      * del repositorio de TaskForEmergency. Retorna una lista de todas las tareas para emergencias
      * que coincidan con el id de la emergencia.
@@ -44,6 +45,14 @@ public class TaskForEmergencyService {
      */
     @GetMapping("/tasks-for-emergency/{id}")
     public List<TaskForEmergency> getTaskVoluntaryByEmergency(@PathVariable("id") int id){
-        return getTaskVoluntary().stream().filter(taskForEmergency -> taskForEmergency.getId_emergency() == id).toList();
+        List<TaskForEmergency> lista_tasks = getTaskVoluntary().stream().filter(taskForEmergency -> taskForEmergency.getId_emergency() == id).toList();
+        List<TaskForEmergency> lista_tasks2 = new ArrayList<TaskForEmergency>();
+        int size = (int) Math.ceil(lista_tasks.size() / 2.0), quantity = -1, contador = 0;
+        while(contador < lista_tasks.size() && (quantity == lista_tasks.get(contador).getQuantity() || contador < size)){
+            quantity = lista_tasks.get(contador).getQuantity();
+            lista_tasks2.add(lista_tasks.get(contador));
+            contador++;
+        }
+        return lista_tasks2;
     }
 }
