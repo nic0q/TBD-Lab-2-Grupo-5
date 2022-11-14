@@ -398,7 +398,6 @@ INSERT INTO "Ranking" (id_task, rut_voluntary) VALUES (29, '0-0');
 INSERT INTO "Ranking" (id_task, rut_voluntary) VALUES (29, '10-9');
 INSERT INTO "Ranking" (id_task, rut_voluntary) VALUES (29, '11-9');
 INSERT INTO "Ranking" (id_task, rut_voluntary) VALUES (29, '12-9');
-
 INSERT INTO "Ranking" (id_task, rut_voluntary) VALUES (30, '0-0');
 INSERT INTO "Ranking" (id_task, rut_voluntary) VALUES (31, '7-9');
 INSERT INTO "Ranking" (id_task, rut_voluntary) VALUES (32, '0-0');
